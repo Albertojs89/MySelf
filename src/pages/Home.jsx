@@ -47,6 +47,7 @@ const Home = () => {
         </a>
       )}
 
+
       {/* Reproductor de audio */}
       <audio ref={audioRef} src="/audio/musicaFondo.mp3" loop hidden />
 
