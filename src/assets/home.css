@@ -28,3 +28,21 @@
   transition: transform 4s ease-in-out;
   transform-origin: left bottom;
 }
+
+
+/* transicion suave al inicio */
+
+.scene-fade-in {
+  opacity: 0;
+  filter: blur(5px);
+  animation: fadeInScene 4s ease-in-out forwards;
+}
+
+@keyframes fadeInScene {
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+
