@@ -128,6 +128,20 @@ const Home = () => {
           ref={sceneRef}
           className={`scene w-[9800px] h-screen relative overflow-hidden mx-auto ${zoomOut ? 'scene-zoom-out' : 'scene-zoom'} ${started ? 'scene-fade-in' : ''}`}
         >
+          {/* EFECTO DE LUZ EN FAROLA */}
+          <div
+            className="absolute rounded-full animate-pulse pointer-events-none"
+            style={{
+              top: '490px',
+              left: '250px',
+              width: '250px',
+              height: '300px',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.5) 20%, rgba(255,255,255,0) 900%)',
+              filter: 'blur(25px)',
+              zIndex: 5
+            }}
+          ></div>
+
           <div className="absolute inset-0 w-[9800px] h-screen bg-bottom bg-no-repeat bg-[url('/images/fondo.png')] filter blur-[2px] z-0" />
 
           <img
@@ -135,6 +149,7 @@ const Home = () => {
             alt="Suelo"
             className="absolute bottom-[-25px] left-0 w-[9800px] z-10 pointer-events-none"
           />
+
      {/* SPRITE ESTÁTICO CON BLUR */}
           {started && (
             <img
