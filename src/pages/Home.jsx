@@ -2,15 +2,18 @@ import { useEffect, useState, useRef } from 'react';
 import '../assets/home.css';
 
 const Home = () => {
-  const [zoomOut, setZoomOut] = useState(false);
-  const [started, setStarted] = useState(false);
-  const [showHint, setShowHint] = useState(false);
-  const [positionX, setPositionX] = useState(300);
-  const [sprite, setSprite] = useState('sprite-quieto.gif');
-  const sceneRef = useRef(null);
-  const audioRef = useRef(null);
-  const directionRef = useRef(null);
-  const animationFrame = useRef(null);
+const [zoomOut, setZoomOut] = useState(false);        // Controla si se aplica el efecto de zoom-out
+const [started, setStarted] = useState(false);        // Indica si se ha pulsado el botón de entrada
+const [showHint, setShowHint] = useState(false);      // Muestra el mensaje "Move"
+const [positionX, setPositionX] = useState(300);      // Posición X del fondo
+const [sprite, setSprite] = useState('sprite-quieto.gif'); // Imagen actual del sprite
+const sceneRef = useRef(null);           // Referencia al contenedor de la escena
+const audioRef = useRef(null);           // Referencia al elemento de audio
+const directionRef = useRef(null);       // Guarda la dirección actual (left/right)
+const animationFrame = useRef(null);     // Referencia a la animación en curso
+
+
+// CONTROL DE TECLAS: Movimiento y cambio de sprite //
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -48,25 +51,41 @@ const Home = () => {
     };
   }, [started]);
 
+  // INICIO: BOTON PARA COMENZAR LA ANIMACION //
+
   const handleStart = () => {
     setStarted(true);
     audioRef.current?.play();
   };
 
-  const startMovement = (key) => {
-    const move = (time) => {
-      setPositionX((prev) => {
-        const movement = 0.2; // VELOCIDAD AJUSTABLE
-        if (key === 'ArrowRight') return Math.max(prev - movement, -6800);
-        if (key === 'ArrowLeft') return Math.min(prev + movement, 300);
-        return prev;
-      });
 
-      animationFrame.current = requestAnimationFrame(move);
-    };
+  // ANIMACION: Movimiento del fondo y sprite //
+
+  const startMovement = (key) => {
+  const move = (time) => {
+    setPositionX((prev) => {
+      const movement = 0.01; // VELOCIDAD AJUSTABLE
+      if (key === 'ArrowRight') return Math.max(prev - movement, -6800);
+      if (key === 'ArrowLeft') return Math.min(prev + movement, 300);
+      return prev;
+    });
 
     animationFrame.current = requestAnimationFrame(move);
   };
+  move(); // ← Esto ejecuta la primera de inmediato
+
+  // Actualiza la posición inmediatamente antes de iniciar la animación
+  setPositionX((prev) => {
+    const movement = 0.01; // VELOCIDAD AJUSTABLE
+    if (key === 'ArrowRight') return Math.max(prev - movement, -6800);
+    if (key === 'ArrowLeft') return Math.min(prev + movement, 300);
+    return prev;
+  });
+
+  animationFrame.current = requestAnimationFrame(move);
+};
+
+
 
   const stopMovement = () => {
     cancelAnimationFrame(animationFrame.current);
@@ -74,12 +93,18 @@ const Home = () => {
     directionRef.current = null;
   };
 
+  //MENSAJE: "Move"< > //
+
   useEffect(() => {
     if (started) {
       const timer = setTimeout(() => setShowHint(true), 2500);
       return () => clearTimeout(timer);
     }
   }, [started]);
+
+
+
+
 
   return (
     <div className="bg-black">
@@ -109,6 +134,7 @@ const Home = () => {
       {/* sprite moviendose fuera del fondo */}
        {zoomOut && (
           <img
+            key={sprite}
             src={`/sprites/${sprite}`}
             alt="Sprite"
             className="fixed bottom-[78px] left-[200px] w-[80px] h-[120px] z-20 pointer-events-none transition-all duration-300"
@@ -150,7 +176,7 @@ const Home = () => {
 
 
 
-
+        {/* Mensaje "Move" */}
 
 
           {started && (
@@ -159,7 +185,7 @@ const Home = () => {
                 showHint ? 'animate-fade-in' : 'fade-out'
               }`}
             >
-              <div className="flex gap-3 items-center text-white text-sm">
+              <div className="flex gap-3 items-center text-white text-sm mb-8">
                 {/* Flecha izquierda */}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 animate-bounce">
