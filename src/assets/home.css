@@ -104,3 +104,36 @@
   will-change: transform;
   transition: transform 0.2s ease-in-out; /* ← esta línea suaviza el cambio */
 }
+
+
+/* ---- Mensaje "Enter para despertar" ---- */
+.enter-message {
+  opacity: 0;
+  filter: blur(5px);
+  animation: appearClear 3s ease-out forwards;
+}
+
+@keyframes appearClear {
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* ---- Mensaje "Move" con flechas ---- */
+.move-message {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: floatUp 2s ease forwards;
+}
+
+@keyframes floatUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hide-move-message {
+  animation: fadeOut 0.5s ease forwards;
+}
