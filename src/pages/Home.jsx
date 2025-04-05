@@ -5,20 +5,31 @@ const Home = () => {
   const [zoomOut, setZoomOut] = useState(false);
   const [started, setStarted] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  const [positionX, setPositionX] = useState(300); // posición inicial
   const sceneRef = useRef(null);
   const audioRef = useRef(null);
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (started && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+ useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (!started) return;
+
+    if (e.key === 'ArrowRight') {
+      setZoomOut(true);
+      setShowHint(false);
+      setPositionX((prev) => Math.max(prev - 1, -6500)); // hacia la derecha
+    }
+
+      if (e.key === 'ArrowLeft') {
         setZoomOut(true);
-        setShowHint(false); // Oculta el mensaje al moverse
+        setShowHint(false);
+        setPositionX((prev) => Math.min(prev + 1, 300)); // hacia la izquierda
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [started]);
+
 
   const handleStart = () => {
     setStarted(true);
@@ -64,7 +75,7 @@ const Home = () => {
       <audio ref={audioRef} src="/audio/musicaFondo.mp3" loop hidden />
 
       {/* Escena principal */}
-      <div className="outer-container translate-x-[300px]">
+      <div className="outer-container" style={{ transform: `translateX(${positionX}px)` }}>
         <div
           ref={sceneRef}
           className={`scene w-[6800px] h-screen relative overflow-hidden mx-auto ${
