@@ -133,18 +133,19 @@ const Home = () => {
       <div className="outer-container" style={{ transform: `translateX(${positionX}px)` }}>
         <div
           ref={sceneRef}
-          className={`scene w-[6800px] h-screen relative overflow-hidden mx-auto ${
+          className={`scene w-[9800px] h-screen relative overflow-hidden mx-auto ${
             zoomOut ? 'scene-zoom-out' : 'scene-zoom'
           } ${started ? 'scene-fade-in' : ''}`}
         >
           {/* FONDO */}
-          <div className="absolute inset-0 w-[6800px] h-screen bg-bottom bg-no-repeat bg-[url('/images/fondo.png')] filter blur-[2px] z-0" />
+          <div className="absolute inset-0 w-[9800px] h-screen bg-bottom bg-no-repeat bg-[url('/images/fondo.png')] filter blur-[2px] z-0" />
 
           {/* SUELO */}
           <img
             src="/images/fondoSuelo.png"
             alt="Suelo"
-            className="absolute bottom-0 left-0 w-[6800px] z-10 pointer-events-none"
+            className="absolute bottom-[-25px]
+ left-0 w-[9800px] z-10 pointer-events-none"
           />
 
           {/* SPRITE INICIAL */}
