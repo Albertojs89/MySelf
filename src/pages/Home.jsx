@@ -8,33 +8,88 @@ const Home = () => {
   const [positionX, setPositionX] = useState(300); // posición inicial
   const sceneRef = useRef(null);
   const audioRef = useRef(null);
+  const animationFrame = useRef(null);
+  const directionRef = useRef(null); // 'left' o 'right'
+
 
  useEffect(() => {
   const handleKeyDown = (e) => {
     if (!started) return;
 
-    if (e.key === 'ArrowRight') {
+    // Si ya estamos moviendo en esa dirección, no reiniciar
+    if (e.key === 'ArrowRight' && directionRef.current !== 'right') {
       setZoomOut(true);
       setShowHint(false);
-      setPositionX((prev) => Math.max(prev - 1, -6500)); // hacia la derecha
+      directionRef.current = 'right';
+      startMovement('right');
     }
 
-      if (e.key === 'ArrowLeft') {
-        setZoomOut(true);
-        setShowHint(false);
-        setPositionX((prev) => Math.min(prev + 1, 300)); // hacia la izquierda
-      }
-    };
+    if (e.key === 'ArrowLeft' && directionRef.current !== 'left') {
+      setZoomOut(true);
+      setShowHint(false);
+      directionRef.current = 'left';
+      startMovement('left');
+    }
+  };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [started]);
+  const handleKeyUp = (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      stopMovement();
+    }
+  };
+
+  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener('keyup', handleKeyUp);
+
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+    window.removeEventListener('keyup', handleKeyUp);
+  };
+}, [started]);
+
 
 
   const handleStart = () => {
     setStarted(true);
     audioRef.current?.play();
   };
+
+const lastTimeRef = useRef(performance.now());
+
+const startMovement = (direction) => {
+  directionRef.current = direction;
+  let lastTime = performance.now();
+
+  const move = (currentTime) => {
+    const deltaTime = (currentTime - lastTime) / 1000;
+    lastTime = currentTime;
+
+    const baseSpeed = 80; // Píxeles/segundo (ajustable)
+    const speedMultiplier = 0.05; // 10% de la velocidad base
+
+    setPositionX((prev) => {
+      const displacement = baseSpeed * deltaTime * speedMultiplier;
+      if (direction === 'right') {
+        return Math.max(prev - displacement, -6500);
+      } else {
+        return Math.min(prev + displacement, 300);
+      }
+    });
+
+    animationFrame.current = requestAnimationFrame(move);
+  };
+
+  animationFrame.current = requestAnimationFrame(move);
+};
+
+
+const stopMovement = () => {
+  cancelAnimationFrame(animationFrame.current);
+  animationFrame.current = null;
+  directionRef.current = null;
+};
+
+
 
   useEffect(() => {
   if (started) {
@@ -75,7 +130,13 @@ const Home = () => {
       <audio ref={audioRef} src="/audio/musicaFondo.mp3" loop hidden />
 
       {/* Escena principal */}
-      <div className="outer-container" style={{ transform: `translateX(${positionX}px)` }}>
+      <div
+  className="outer-container"
+  style={{
+    transform: `translate3d(${positionX}px, 0, 0)`, // Elimina el multiplicador
+  }}
+>
+
         <div
           ref={sceneRef}
           className={`scene w-[6800px] h-screen relative overflow-hidden mx-auto ${

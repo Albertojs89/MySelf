@@ -79,3 +79,9 @@
 .scene {
   will-change: transform;
 }
+.outer-container {
+  position: relative;
+  will-change: transform;
+  
+}
+
