@@ -76,3 +76,17 @@
   }
 }
 
+.sprite-fade-out {
+  animation: fadeOutSprite 1.2s ease forwards;
+}
+
+@keyframes fadeOutSprite {
+  from {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
