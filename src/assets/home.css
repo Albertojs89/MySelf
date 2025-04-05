@@ -10,13 +10,14 @@
 }
 
 /* Para continuar la página con fondo negro */
+
 .black-section {
   background-color: black;
   width: 100%;
   height: 100vh;
 }
 
-
+/* Zoom inicial de la escena */
 .scene-zoom {
   transform: scale(2.8);
   transition: transform 4s ease-in-out;
@@ -44,8 +45,10 @@
     filter: blur(0px);
   }
 }
-/* mensaje movimiento */
 
+
+
+/* Animaciones de entrada/salida para el mensaje "Move" */
 
 @keyframes fadeIn {
   from {
@@ -76,6 +79,10 @@
   }
 }
 
+
+/* Desvanecimiento del sprite inicial */
+
+
 .sprite-fade-out {
   animation: fadeOutSprite 1.2s ease forwards;
 }
@@ -89,4 +96,44 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+}
+
+/* suavizar el movimiento de fondo */
+.outer-container {
+  position: relative;
+  will-change: transform;
+  transition: transform 0.2s ease-in-out; /* ← esta línea suaviza el cambio */
+}
+
+
+/* ---- Mensaje "Enter para despertar" ---- */
+.enter-message {
+  opacity: 0;
+  filter: blur(5px);
+  animation: appearClear 3s ease-out forwards;
+}
+
+@keyframes appearClear {
+  to {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
+/* ---- Mensaje "Move" con flechas ---- */
+.move-message {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: floatUp 2s ease forwards;
+}
+
+@keyframes floatUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hide-move-message {
+  animation: fadeOut 0.5s ease forwards;
 }
