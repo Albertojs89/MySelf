@@ -136,13 +136,17 @@ const Home = () => {
 
 
           {/* sprite inicial solo */}
-         {!zoomOut && (
+       {started && (
           <img
             src="/sprites/sprite-quieto.gif"
             alt="Sprite zoom inicial"
-            className="absolute bottom-[78px] left-[200px] w-[80px] h-[120px] z-20 pointer-events-none transition-all duration-300"
+            className={`absolute bottom-[78px] left-[200px] w-[80px] h-[120px] z-20 pointer-events-none transition-all duration-300 ${
+              zoomOut ? 'sprite-fade-out' : ''
+            }`}
           />
         )}
+
+
 
 
 
