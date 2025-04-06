@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/home.css';
 import '../assets/particles.css';
+import CrowAnimation from '../components/CrowAnimation';
+
 
 const Home = () => {
   //ESTADOS
@@ -11,6 +13,8 @@ const Home = () => {
   const [movementReady, setMovementReady] = useState(false); // Controla si el personaje puede moverse
   const [positionX, setPositionX] = useState(300);// Posición horizontal del fondo (para scroll horizontal)
   const [sprite, setSprite] = useState('sprite-quieto.gif'); // Imagen actual del sprite
+  const [showCrow, setShowCrow] = useState(false); // Controla si se muestra la animación del cuervo
+
   //REFERENCIAS
   const sceneRef = useRef(null);
   const audioRef = useRef(null);
@@ -47,6 +51,10 @@ const Home = () => {
         if (e.key === 'ArrowRight') setSprite('sprite-corre-derecha.gif');
         if (e.key === 'ArrowLeft') setSprite('sprite-corre-izquierda.gif');
         directionRef.current = e.key;
+        if (!showCrow) {
+          setShowCrow(true);
+        }
+
         startMovement(e.key);
       }
     };
@@ -178,6 +186,8 @@ const Home = () => {
               </div>
             </div>
           )}
+          {showCrow && <CrowAnimation />}
+
         </div>
       </div>
     </div>
