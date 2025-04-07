@@ -8,3 +8,7 @@ html, body, #root {
 html {
   scroll-behavior: smooth;
 }
+
+body {
+  font-family: 'Cinzel Decorative', serif;
+}

@@ -1,0 +1,19 @@
+/* Oculta el cursor */
+.custom-cursor-container {
+  cursor: none;
+}
+
+/* Punto de luz */
+.cursor-glow {
+  position: fixed;
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle, #ffffff 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  filter: blur(6px);
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s linear;
+}

@@ -154,3 +154,12 @@
   animation: fade-in-slow 4s ease forwards;
 }
 
+/* icono enter */
+@keyframes softBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.animate-soft-blink {
+  animation: softBlink 2s ease-in-out infinite;
+}
