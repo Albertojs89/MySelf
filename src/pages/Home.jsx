@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import '../assets/home.css';
 import '../assets/particles.css';
 import CrowAnimation from '../components/CrowAnimation';
+import '../assets/cursor.css';
+
 
 
 const Home = () => {
@@ -28,6 +30,9 @@ const Home = () => {
     setStarted(true);
     audioRef.current?.play();
   };
+
+
+  //     USEFFECTS--------------------------------------------
 // EFECTO: Detecta Enter para iniciar el zoom y movimiento
   useEffect(() => {
     const handleEnter = (e) => {
@@ -87,8 +92,23 @@ useEffect(() => {
   }
 }, [positionX, showTreeMessage]);
 
+//EFECTO CURSOR ANIMADO
+useEffect(() => {
+  const cursor = document.getElementById('cursor-glow');
 
+  const moveCursor = (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    if (cursor) {
+      cursor.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  };
 
+  window.addEventListener('mousemove', moveCursor);
+  return () => window.removeEventListener('mousemove', moveCursor);
+}, []);
+
+//---------------------------------------------------------------------------------------
   // ANIMACIÓN CONTINUA DE MOVIMIENTO HORIZONTAL DEL ESCENARIO
   const startMovement = (key) => {
     const move = () => {
@@ -111,6 +131,10 @@ useEffect(() => {
 
   return (
     <div className="bg-black">
+      <div className="custom-cursor-container">
+      <div id="cursor-glow" className="cursor-glow"></div>
+    </div>
+
       {!started && (
         <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
           <button
@@ -169,7 +193,7 @@ useEffect(() => {
           {/* TEXTO JUNTO AL ÁRBOL */}
            {showTreeMessage && (
               <div
-                className="absolute text-white text-xl md:text-3xl text-center z-30 transition-opacity duration-[3000ms] opacity-0 animate-fade-in-slow"
+                className="absolute text-white text-xl md:text-3xl text-center z-30 transition-opacity duration-[9000ms] opacity-0 animate-fade-in-slow"
                 style={{
                   top: '250px',
                   left: '690px',
@@ -177,7 +201,7 @@ useEffect(() => {
                   pointerEvents: 'none',
                 }}
               >
-                Frontend Developer<br />&<br />Creative Design
+                Frontend Developer<br />&<br />Creative Designer
               </div>
             )}
 
@@ -201,9 +225,18 @@ useEffect(() => {
           )}
           {/* MENSAJE DE INICIO */}
           {started && !zoomOut && (
-            <div className="enter-message absolute bottom-[220px] left-[170px] text-white text-sm z-30 animate-fade-in">
-              Pulsa <b className="mx-1">Enter</b> para despertar
-            </div>
+         <div className="enter-message absolute bottom-[220px] left-[130px] text-white text-sm z-30 animate-fade-in flex items-center gap-2">
+          Pulsa 
+          <img 
+            src="https://www.svgrepo.com/show/489753/keyboard-enter.svg" 
+            alt="Enter" 
+            className="w-6 h-6 animate-soft-blink invert"
+          />
+          para despertar
+        </div>
+
+
+
           )}
           {/* MENSAJE DE MOVIMIENTO */}
           {zoomOut && movementReady && showHint && (
