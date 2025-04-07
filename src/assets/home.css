@@ -137,3 +137,20 @@
 .hide-move-message {
   animation: fadeOut 0.5s ease forwards;
 }
+
+
+@keyframes fade-in-slow {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-slow {
+  animation: fade-in-slow 4s ease forwards;
+}
+

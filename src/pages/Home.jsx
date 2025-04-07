@@ -14,6 +14,8 @@ const Home = () => {
   const [positionX, setPositionX] = useState(300);// Posición horizontal del fondo (para scroll horizontal)
   const [sprite, setSprite] = useState('sprite-quieto.gif'); // Imagen actual del sprite
   const [showCrow, setShowCrow] = useState(false); // Controla si se muestra la animación del cuervo
+  const [showTreeMessage, setShowTreeMessage] = useState(false); // Controla si se muestra el mensaje del árbol
+
 
   //REFERENCIAS
   const sceneRef = useRef(null);
@@ -72,6 +74,20 @@ const Home = () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
   }, [movementReady]);
+
+
+  //EVENTO PRESENTACION AL PASAR
+useEffect(() => {
+  console.log('posición actual:', positionX); // DEBUG
+
+  // Si estamos muy cerca de la posición exacta
+  if (!showTreeMessage && positionX >= 296 && positionX <= 299) {
+    console.log('Activando mensaje de árbol'); // DEBUG
+    setShowTreeMessage(true);
+  }
+}, [positionX, showTreeMessage]);
+
+
 
   // ANIMACIÓN CONTINUA DE MOVIMIENTO HORIZONTAL DEL ESCENARIO
   const startMovement = (key) => {
@@ -145,10 +161,27 @@ const Home = () => {
               width: '250px',
               height: '300px',
               background: 'radial-gradient(circle, rgba(255,255,255,0.5) 20%, rgba(255,255,255,0) 900%)',
-              filter: 'blur(25px)',
+              filter: 'blur(23px)',
               zIndex: 5
             }}
           ></div>
+          
+          {/* TEXTO JUNTO AL ÁRBOL */}
+           {showTreeMessage && (
+              <div
+                className="absolute text-white text-xl md:text-3xl text-center z-30 transition-opacity duration-[3000ms] opacity-0 animate-fade-in-slow"
+                style={{
+                  top: '250px',
+                  left: '690px',
+                  width: '400px',
+                  pointerEvents: 'none',
+                }}
+              >
+                Frontend Developer<br />&<br />Creative Design
+              </div>
+            )}
+
+
 
           <div className="absolute inset-0 w-[9800px] h-screen bg-bottom bg-no-repeat bg-[url('/images/fondo.png')] filter blur-[2px] z-0" />
 
