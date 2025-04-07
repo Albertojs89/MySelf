@@ -17,6 +17,7 @@ const Home = () => {
   const [sprite, setSprite] = useState('sprite-quieto.gif'); // Imagen actual del sprite
   const [showCrow, setShowCrow] = useState(false); // Controla si se muestra la animación del cuervo
   const [showTreeMessage, setShowTreeMessage] = useState(false); // Controla si se muestra el mensaje del árbol
+  const [showEnterMessage, setShowEnterMessage] = useState(false);
 
 
   //REFERENCIAS
@@ -26,10 +27,16 @@ const Home = () => {
   const animationFrame = useRef(null);
 
    // FUNCIÓN AL PULSAR EL BOTÓN INICIAL
-  const handleStart = () => {
+ const handleStart = () => {
     setStarted(true);
     audioRef.current?.play();
+
+    // Mostrar el mensaje "Pulsa Enter" tras 2.5s
+    setTimeout(() => {
+      setShowEnterMessage(true);
+    }, 4500);
   };
+
 
 
   //     USEFFECTS--------------------------------------------
@@ -224,20 +231,22 @@ useEffect(() => {
             />
           )}
           {/* MENSAJE DE INICIO */}
-          {started && !zoomOut && (
-         <div className="enter-message absolute bottom-[220px] left-[130px] text-white text-sm z-30 animate-fade-in flex items-center gap-2">
-          Pulsa 
-          <img 
-            src="https://www.svgrepo.com/show/489753/keyboard-enter.svg" 
-            alt="Enter" 
-            className="w-6 h-6 animate-soft-blink invert"
-          />
-          para despertar
-        </div>
-
-
-
+         {started && !zoomOut && showEnterMessage && (
+            <div className="enter-message absolute bottom-[220px] left-[130px] text-white text-sm z-30 animate-fade-in flex items-center gap-2">
+              Pulsa 
+              <img 
+                src="https://www.svgrepo.com/show/489753/keyboard-enter.svg" 
+                alt="Enter" 
+                className="w-6 h-6 animate-soft-blink invert"
+              />
+              para despertar
+            </div>
           )}
+
+
+
+
+          
           {/* MENSAJE DE MOVIMIENTO */}
           {zoomOut && movementReady && showHint && (
             <div className={`absolute bottom-[480px] left-[190px] text-white text-xl z-30 ${showHint ? 'move-message' : 'hide-move-message'}`}>
