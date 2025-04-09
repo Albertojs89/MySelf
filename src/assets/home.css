@@ -163,3 +163,30 @@
 .animate-soft-blink {
   animation: softBlink 2s ease-in-out infinite;
 }
+
+
+/* efecto bocadillo sabio pj */
+.bocadillo-enter {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.bocadillo-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+}
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.bocadillo-animado {
+  animation: slideInFromRight 0.6s ease-out forwards;
+}

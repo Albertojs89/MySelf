@@ -18,7 +18,8 @@ const Home = () => {
   const [showCrow, setShowCrow] = useState(false); // Controla si se muestra la animación del cuervo
   const [showTreeMessage, setShowTreeMessage] = useState(false); // Controla si se muestra el mensaje del árbol
   const [showEnterMessage, setShowEnterMessage] = useState(false);
-
+  const [showSabioMessage, setShowSabioMessage] = useState(false);  // Controla si se muestra el mensaje del sabio
+  
 
   //REFERENCIAS
   const sceneRef = useRef(null);
@@ -121,7 +122,7 @@ useEffect(() => {
     const move = () => {
       setPositionX((prev) => {
         const movement = 0.01;
-        if (key === 'ArrowRight') return Math.max(prev - movement, -6800);
+        if (key === 'ArrowRight') return Math.max(prev - movement, -9800);
         if (key === 'ArrowLeft') return Math.min(prev + movement, 300);
         return prev;
       });
@@ -212,6 +213,36 @@ useEffect(() => {
               </div>
             )}
 
+            {/* SABIO FIJO */}
+            <img
+              src="/sprites/sabio.gif"
+              alt="Sabio"
+              className="absolute w-[90px] h-[170px] z-20"
+              style={{
+                top: '40px',
+                left: '2240px',
+                filter: 'blur(1.3px)',
+                
+              }}
+              onMouseEnter={() => setShowSabioMessage(true)}
+              onMouseLeave={() => setShowSabioMessage(false)}
+            />
+            {/* BOCADILLO DEL SABIO */}
+            {showSabioMessage && (
+            <div
+              className="absolute bg-white text-black text-sm p-3 rounded-md shadow-md font-sans bocadillo-animado"
+              style={{
+                fontFamily: 'sans-serif',
+                fontSize: '20px',
+                top: '50px',
+                left: '2340px',
+                maxWidth: '300px',
+                zIndex: 20,
+              }}
+            >
+              mmmhh... Look this...
+            </div>
+          )}
 
 
           <div className="absolute inset-0 w-[9800px] h-screen bg-bottom bg-no-repeat bg-[url('/images/fondo.png')] filter blur-[2px] z-0" />
