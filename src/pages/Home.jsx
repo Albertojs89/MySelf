@@ -1,4 +1,3 @@
-// Home.jsx adaptado para interacción móvil (tap para entrar y swipe para mover sprite)
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/home.css';
@@ -230,6 +229,58 @@ const Home = () => {
           alt="Sprite"
           className="fixed bottom-[78px] left-[200px] w-[80px] h-[120px] z-20 pointer-events-none transition-all duration-300"
         />
+      )}
+
+      {/* Flechas móviles para mover el sprite */}
+      {zoomOut && movementReady && isMobile && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-10 z-50 pointer-events-auto">
+          <button
+            aria-label="Mover a la izquierda"
+            className="bg-white/20 hover:bg-white/40 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg backdrop-blur transition-all duration-200 active:scale-90"
+            style={{ boxShadow: '0 2px 16px 0 rgba(255,255,255,0.12)' }}
+            onClick={() => {
+              const container = scrollContainerRef.current;
+              if (container) {
+                container.scrollTo({
+                  left: container.scrollLeft - 160,
+                  behavior: 'smooth'
+                });
+                setSprite('sprite-corre-izquierda.gif');
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = setTimeout(() => {
+                  setSprite('sprite-quieto.gif');
+                }, 500);
+              }
+            }}
+          >
+            <svg width="32" height="32" fill="none" stroke="white" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20 28L8 16l12-12" />
+            </svg>
+          </button>
+          <button
+            aria-label="Mover a la derecha"
+            className="bg-white/20 hover:bg-white/40 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg backdrop-blur transition-all duration-200 active:scale-90"
+            style={{ boxShadow: '0 2px 16px 0 rgba(255,255,255,0.12)' }}
+            onClick={() => {
+              const container = scrollContainerRef.current;
+              if (container) {
+                container.scrollTo({
+                  left: container.scrollLeft + 160,
+                  behavior: 'smooth'
+                });
+                setSprite('sprite-corre-derecha.gif');
+                clearTimeout(timeoutRef.current);
+                timeoutRef.current = setTimeout(() => {
+                  setSprite('sprite-quieto.gif');
+                }, 500);
+              }
+            }}
+          >
+            <svg width="32" height="32" fill="none" stroke="white" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4l12 12-12 12" />
+            </svg>
+          </button>
+        </div>
       )}
 
       <div
