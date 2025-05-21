@@ -1,4 +1,4 @@
-// Home.jsx con mejora de posición del sprite + detección de dirección de scroll + icono ratón
+// Home.jsx con animación del cuervo retrasada y efecto visual en mensaje 'Move'
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/home.css';
@@ -35,6 +35,7 @@ const Home = () => {
       if (!started || movementReady) return;
       if (e.key === 'Enter') {
         setZoomOut(true);
+        setTimeout(() => setShowCrow(true), 2000); // lanzar cuervo tras 2s
         setTimeout(() => {
           setMovementReady(true);
           setShowHint(true);
@@ -59,7 +60,7 @@ const Home = () => {
         setSprite('sprite-corre-izquierda.gif');
       }
       lastScrollX.current = newScrollX;
-      container.scrollLeft += e.deltaY;
+      container.scrollLeft += e.deltaY * 2.2;
 
       clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
@@ -71,10 +72,28 @@ const Home = () => {
   }, [movementReady]);
 
   useEffect(() => {
-    if (!showTreeMessage && scrollContainerRef.current?.scrollLeft >= 690) {
-      setShowTreeMessage(true);
-    }
-  }, [movementReady]);
+    const handleScrollTree = () => {
+      if (!showTreeMessage && scrollContainerRef.current?.scrollLeft >= 650 && scrollContainerRef.current?.scrollLeft <= 780) {
+        setShowTreeMessage(true);
+      }
+    };
+    const scrollEl = scrollContainerRef.current;
+    scrollEl?.addEventListener('scroll', handleScrollTree);
+    return () => scrollEl?.removeEventListener('scroll', handleScrollTree);
+  }, [showTreeMessage, movementReady]);
+
+  useEffect(() => {
+    const cursor = document.getElementById('cursor-glow');
+    const moveCursor = (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      if (cursor) {
+        cursor.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    };
+    window.addEventListener('mousemove', moveCursor);
+    return () => window.removeEventListener('mousemove', moveCursor);
+  }, []);
 
   return (
     <div className="bg-black">
@@ -109,7 +128,7 @@ const Home = () => {
           key={sprite}
           src={`/sprites/${sprite}`}
           alt="Sprite"
-          className="fixed bottom-[62px] left-[36px] w-[80px] h-[120px] z-20 pointer-events-none transition-all duration-300"
+          className="fixed bottom-[78px] left-[200px] w-[80px] h-[120px] z-20 pointer-events-none transition-all duration-300"
         />
       )}
 
@@ -180,21 +199,25 @@ const Home = () => {
             <div className="enter-message absolute bottom-[220px] left-[130px] text-white text-sm z-30 animate-fade-in flex items-center gap-2">
               Pulsa
               <img
-                src="/images/icono-raton-transparente.png"
-                alt="Mouse Scroll"
-                className="w-6 h-6 invert animate-soft-blink"
+                src="https://www.svgrepo.com/show/489753/keyboard-enter.svg"
+                alt="Enter"
+                className="w-6 h-6 animate-soft-blink invert"
               />
               para despertar
             </div>
           )}
 
           {zoomOut && movementReady && showHint && (
-            <div className="absolute bottom-[480px] left-[190px] text-white text-xl z-30">
+            <div className="enter-message absolute bottom-[480px] left-[190px] text-white text-xl z-30 animate-fade-in">
               <div className="flex gap-6 items-center text-white text-3xl font-semibold drop-shadow-md">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
-                <span>Move</span>
+                <img
+                  src="/images/icono-raton-transparente.png"
+                  alt="Rueda del ratón"
+                  className="w-6 h-6 animate-soft-blink invert"
+                />
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
