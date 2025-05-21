@@ -1,10 +1,15 @@
-// Home.jsx con animación del cuervo retrasada y efecto visual en mensaje 'Move'
+// Home.jsx adaptado para interacción móvil (tap para entrar y swipe para mover sprite)
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/home.css';
 import '../assets/particles.css';
 import CrowAnimation from '../components/CrowAnimation';
 import '../assets/cursor.css';
+
+// Función para detectar si es dispositivo móvil
+const isMobileDevice = () =>
+  typeof window !== 'undefined' &&
+  /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 
 const Home = () => {
   const [zoomOut, setZoomOut] = useState(false);
@@ -16,13 +21,26 @@ const Home = () => {
   const [showTreeMessage, setShowTreeMessage] = useState(false);
   const [showEnterMessage, setShowEnterMessage] = useState(false);
   const [showSabioMessage, setShowSabioMessage] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const audioRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const lastScrollX = useRef(0);
   const timeoutRef = useRef(null);
 
+  useEffect(() => {
+    setIsMobile(isMobileDevice());
+  }, []);
+
   const handleStart = () => {
+    setStarted(true);
+    audioRef.current?.play();
+    setTimeout(() => {
+      setShowEnterMessage(true);
+    }, 4500);
+  };
+
+  const handleMobileStart = () => {
     setStarted(true);
     audioRef.current?.play();
     setTimeout(() => {
@@ -35,7 +53,7 @@ const Home = () => {
       if (!started || movementReady) return;
       if (e.key === 'Enter') {
         setZoomOut(true);
-        setTimeout(() => setShowCrow(true), 2000); // lanzar cuervo tras 2s
+        setTimeout(() => setShowCrow(true), 2000);
         setTimeout(() => {
           setMovementReady(true);
           setShowHint(true);
@@ -43,12 +61,39 @@ const Home = () => {
         }, 4000);
       }
     };
-    window.addEventListener('keydown', handleEnter);
-    return () => window.removeEventListener('keydown', handleEnter);
-  }, [started, movementReady]);
+
+    // Tap en móvil para "despertar"
+    const handleMobileTap = () => {
+      if (!started || movementReady) return;
+      setZoomOut(true);
+      setTimeout(() => setShowCrow(true), 2000);
+      setTimeout(() => {
+        setMovementReady(true);
+        setShowHint(true);
+        setTimeout(() => setShowHint(false), 9000);
+      }, 4000);
+    };
+
+    if (isMobile) {
+      window.addEventListener('touchend', handleMobileTap);
+    } else {
+      window.addEventListener('keydown', handleEnter);
+    }
+    return () => {
+      if (isMobile) {
+        window.removeEventListener('touchend', handleMobileTap);
+      } else {
+        window.removeEventListener('keydown', handleEnter);
+      }
+    };
+  }, [started, movementReady, isMobile]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
+
+    let touchStartX = 0;
+    let lastTouchX = 0;
+
     const handleWheel = (e) => {
       if (!movementReady) return;
       e.preventDefault();
@@ -67,9 +112,49 @@ const Home = () => {
         setSprite('sprite-quieto.gif');
       }, 500);
     };
-    container?.addEventListener('wheel', handleWheel, { passive: false });
-    return () => container?.removeEventListener('wheel', handleWheel);
-  }, [movementReady]);
+
+    // Swipe en móvil
+    const handleTouchStart = (e) => {
+      if (!movementReady) return;
+      touchStartX = e.touches[0].clientX;
+      lastTouchX = touchStartX;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!movementReady) return;
+      const touchX = e.touches[0].clientX;
+      const deltaX = lastTouchX - touchX;
+      container.scrollLeft += deltaX * 1.8;
+
+      if (deltaX > 0) {
+        setSprite('sprite-corre-derecha.gif');
+      } else if (deltaX < 0) {
+        setSprite('sprite-corre-izquierda.gif');
+      }
+      lastTouchX = touchX;
+
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setSprite('sprite-quieto.gif');
+      }, 500);
+    };
+
+    if (isMobile) {
+      container?.addEventListener('touchstart', handleTouchStart, { passive: false });
+      container?.addEventListener('touchmove', handleTouchMove, { passive: false });
+    } else {
+      container?.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (isMobile) {
+        container?.removeEventListener('touchstart', handleTouchStart);
+        container?.removeEventListener('touchmove', handleTouchMove);
+      } else {
+        container?.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [movementReady, isMobile]);
 
   useEffect(() => {
     const handleScrollTree = () => {
@@ -102,14 +187,29 @@ const Home = () => {
       </div>
 
       {!started && (
-        <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
-          <button
-            onClick={handleStart}
-            className="text-white border border-white px-6 py-3 text-xl hover:bg-white hover:text-black transition-all duration-300 rounded-full"
+        isMobile ? (
+          <div
+            className="fixed inset-0 bg-black flex items-center justify-center z-50"
+            onClick={handleMobileStart}
+            style={{ touchAction: 'manipulation', cursor: 'pointer' }}
           >
-            Entrar a mi portfolio
-          </button>
-        </div>
+            <button
+              className="text-white border border-white px-6 py-3 text-xl hover:bg-white hover:text-black transition-all duration-300 rounded-full"
+              style={{ fontSize: 22 }}
+            >
+              Toca para entrar a mi portfolio
+            </button>
+          </div>
+        ) : (
+          <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
+            <button
+              onClick={handleStart}
+              className="text-white border border-white px-6 py-3 text-xl hover:bg-white hover:text-black transition-all duration-300 rounded-full"
+            >
+              Entrar a mi portfolio
+            </button>
+          </div>
+        )
       )}
 
       {started && (
@@ -197,30 +297,52 @@ const Home = () => {
 
           {started && !zoomOut && showEnterMessage && (
             <div className="enter-message absolute bottom-[220px] left-[130px] text-white text-sm z-30 animate-fade-in flex items-center gap-2">
-              Pulsa
-              <img
-                src="https://www.svgrepo.com/show/489753/keyboard-enter.svg"
-                alt="Enter"
-                className="w-6 h-6 animate-soft-blink invert"
-              />
-              para despertar
+              {isMobile ? (
+                <>
+                  Toca la pantalla para despertar
+                </>
+              ) : (
+                <>
+                  Pulsa
+                  <img
+                    src="https://www.svgrepo.com/show/489753/keyboard-enter.svg"
+                    alt="Enter"
+                    className="w-6 h-6 animate-soft-blink invert"
+                  />
+                  para despertar
+                </>
+              )}
             </div>
           )}
 
           {zoomOut && movementReady && showHint && (
             <div className="enter-message absolute bottom-[480px] left-[190px] text-white text-xl z-30 animate-fade-in">
               <div className="flex gap-6 items-center text-white text-3xl font-semibold drop-shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-                <img
-                  src="/images/icono-raton-transparente.png"
-                  alt="Rueda del ratón"
-                  className="w-6 h-6 animate-soft-blink invert"
-                />
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
+                {isMobile ? (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                    <span className="text-lg font-bold">Desliza para moverte</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                    <img
+                      src="/images/icono-raton-transparente.png"
+                      alt="Rueda del ratón"
+                      className="w-6 h-6 animate-soft-blink invert"
+                    />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </>
+                )}
               </div>
             </div>
           )}
