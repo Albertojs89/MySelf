@@ -366,37 +366,40 @@ const Home = () => {
             </div>
           )}
 
-          {zoomOut && movementReady && showHint && (
-            <div className="enter-message absolute bottom-[480px] left-[190px] text-white text-xl z-30 animate-fade-in">
-              <div className="flex gap-6 items-center text-white text-3xl font-semibold drop-shadow-md">
-                {isMobile ? (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                    </svg>
-                    <span className="text-lg font-bold">Desliza para moverte</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                  </>
-                ) : (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                    </svg>
-                    <img
-                      src="/images/icono-raton-transparente.png"
-                      alt="Rueda del ratón"
-                      className="w-6 h-6 animate-soft-blink invert"
-                    />
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8 animate-bounce text-white">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
+{zoomOut && movementReady && (
+  <div
+    className={`enter-message absolute bottom-[480px] left-[190px] text-white text-xl z-30 animate-fade-in ${
+      !showHint ? 'fade-out' : ''
+    }`}
+  >
+    <div className="flex items-center gap-4 text-white font-semibold drop-shadow-md">
+      <img
+        src="/images/rueda.png"
+        alt="Icono de scroll"
+        style={{
+          width: '40px',
+          height: 'auto',
+          filter: 'invert(1) brightness(2)',
+          animation: 'softBlink 2s infinite alternate'
+        }}
+      />
+      <p
+        style={{
+          color: 'white',
+          fontSize: '1.25rem',      // Más grande y visible
+          fontWeight: 600,
+          fontFamily: 'inherit',
+          margin: 0                  // Elimina margen innecesario
+        }}
+      >
+        Scroll to move
+      </p>
+    </div>
+  </div>
+)}
+
+
+
 
           {showCrow && <CrowAnimation />}
         </div>

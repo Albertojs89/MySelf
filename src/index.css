@@ -12,3 +12,11 @@ html {
 body {
   font-family: 'Cinzel Decorative', serif;
 }
+
+.enter-message {
+  transition: opacity 0.5s ease;
+  opacity: 1;
+}
+.enter-message.fade-out {
+  opacity: 0;
+}
