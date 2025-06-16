@@ -364,9 +364,15 @@ const Home = () => {
           {showExperienceText && (
             <div
               className="absolute text-white text-xl md:text-2xl text-center z-30 transition-opacity duration-[9000ms] opacity-0 animate-fade-in-slow"
-              style={{ top: '350px', left: '1500px', width: '400px', pointerEvents: 'none' }}
+              style={{
+                top: '450px',
+                left: '2300px',
+                width: '400px',
+                pointerEvents: 'none',
+                textShadow: '4px 4px 4px #000, 0 0 8px #000, 0 2px 4px #000'
+              }}
             >
-              Experiencia en Desarrollo <br />Diseño UX/UI <br></br>& Illustration
+              Experiencia en Desarrollo <br />Diseño UX/UI <br />& Illustration
             </div>
           )}
 
