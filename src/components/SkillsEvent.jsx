@@ -23,7 +23,7 @@ const SkillsEvent = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setVisible(true), 100); // delay para fade-in
+    const timeout = setTimeout(() => setVisible(true), 250); // delay para fade-in
     return () => clearTimeout(timeout);
   }, []);
 

@@ -24,6 +24,7 @@ const Home = () => {
   const [showSabioMessage, setShowSabioMessage] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showSkills, setShowSkills] = useState(false); // Nuevo estado para evento de Skills
+  
 
   const audioRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -336,6 +337,8 @@ const Home = () => {
               Frontend Developer<br />&<br />Creative Designer
             </div>
           )}
+
+          
           
 
           <img
