@@ -21,6 +21,7 @@ const Home = () => {
   const [showEnterMessage, setShowEnterMessage] = useState(false);
   const [showSabioMessage, setShowSabioMessage] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showSkills, setShowSkills] = useState(false); // Nuevo estado para evento de Skills
 
   const audioRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -165,6 +166,28 @@ const Home = () => {
     scrollEl?.addEventListener('scroll', handleScrollTree);
     return () => scrollEl?.removeEventListener('scroll', handleScrollTree);
   }, [showTreeMessage, movementReady]);
+
+    // Evento de skills - muestra los iconos al alcanzar cierta posición
+    useEffect(() => {
+      const handleScrollSkills = () => {
+        const scrollX = scrollContainerRef.current?.scrollLeft || 0;
+  
+        // Muestra en consola la posición actual del scroll
+        console.log('Scroll horizontal:', scrollX);
+  
+        // Activa el evento de skills una vez
+        if (!showSkills && scrollX >= 3600) {
+          setShowSkills(true);
+          console.log('🎉 Evento de skills activado');
+        }
+      };
+  
+      const scrollEl = scrollContainerRef.current;
+      scrollEl?.addEventListener('scroll', handleScrollSkills);
+  
+      return () => scrollEl?.removeEventListener('scroll', handleScrollSkills);
+    }, [showSkills]);
+  
 
   useEffect(() => {
     const cursor = document.getElementById('cursor-glow');
@@ -311,6 +334,7 @@ const Home = () => {
               Frontend Developer<br />&<br />Creative Designer
             </div>
           )}
+          
 
           <img
             src="/sprites/sabio.gif"
