@@ -362,67 +362,64 @@ const Home = () => {
           )}
 
 {showExperienceText && (
-  <div
-    className="absolute z-30 group" // usamos "group" para hover en hijos
-    style={{
-      top: '450px',
-      left: '2300px',
-      width: '600px',
-      pointerEvents: 'auto'
-    }}
-  >
-{/* Texto principal */}
+  
 <div
-  className="text-white text-xl md:text-2xl text-center transition-opacity duration-[9000ms] opacity-0 animate-fade-in-slow"
->
-  Experiencia en Desarrollo <br />Diseño UX/UI <br />& Illustration
-</div>
-
-{/* Panel lateral oculto (hover) */}
-<div
-  className="absolute left-[520px] top-0 opacity-0 group-hover:opacity-100 transition-all duration-700"
+  className="absolute z-30 group"
   style={{
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '20px'
+    top: '450px',
+    left: '2300px',
+    width: '600px',
+    pointerEvents: 'auto'
   }}
 >
-  {/* Línea vertical animada */}
+  {/* Texto principal */}
   <div
-    className="h-[120px] bg-white"
-    style={{
-      width: '2px',
-      boxShadow: '0 0 6px white',
-      transform: 'scaleY(0)',
-      transformOrigin: 'top',
-      animation: 'growLine 0.5s ease-in-out forwards'
-    }}
-  ></div>
-
-  {/* Lista de experiencias */}
-  <div className="text-white text-sm leading-relaxed font-light space-y-2">
-    <p>- Menarini Group – Desarrollador/Diseñador</p>
-    <p>- Freepik – Diseñador</p>
-    <p>- Diseñador Creativo</p>
-    <p>- Proyectos propios como desarrollador frontend</p>
+    className="text-white text-xl md:text-2xl text-center transition-opacity duration-[9000ms] opacity-0 animate-fade-in-slow"
+  >
+    Experiencia en Desarrollo <br />Diseño UX/UI <br />& Illustration
   </div>
+
+  {/* Panel lateral o inferior según pantalla */}
+  <div
+    className="absolute md:left-[520px] left-0 md:top-0 top-[100px] opacity-0 group-hover:opacity-100 transition-all duration-700 flex md:flex-row flex-col md:items-start items-center gap-4 md:pl-0 pl-4"
+  >
+    {/* Línea blanca animada */}
+    <div
+      className="bg-white"
+      style={{
+        width: '2px',
+        height: '120px',
+        boxShadow: '0 0 6px white',
+        transform: 'scaleY(0)',
+        transformOrigin: 'top',
+        animation: 'growLine 0.5s ease-in-out forwards'
+      }}
+    ></div>
+
+    {/* Lista de experiencias */}
+    <div className="text-white text-sm md:text-base leading-relaxed font-light space-y-2 text-left md:pt-0 pt-2">
+      <p>- Menarini Group – Desarrollador/Diseñador</p>
+      <p>- Freepik – Diseñador</p>
+      <p>- Diseñador Creativo</p>
+      <p>- Proyectos propios como desarrollador frontend</p>
+    </div>
+  </div>
+
+  {/* Animación para la línea */}
+  <style>
+    {`
+      .group:hover div[style*="scaleY"] {
+        animation: growLine 0.5s ease-in-out forwards;
+      }
+
+      @keyframes growLine {
+        from { transform: scaleY(0); }
+        to { transform: scaleY(1); }
+      }
+    `}
+  </style>
 </div>
 
-{/* Animación para la línea */}
-<style>
-  {`
-    .group:hover div[style*="scaleY"] {
-      animation: growLine 0.5s ease-in-out forwards;
-    }
-
-    @keyframes growLine {
-      from { transform: scaleY(0); }
-      to { transform: scaleY(1); }
-    }
-  `}
-</style>
-
-  </div>
 )}
 
 
