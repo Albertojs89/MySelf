@@ -4,6 +4,8 @@ import '../assets/home.css';
 import '../assets/particles.css';
 import CrowAnimation from '../components/CrowAnimation';
 import '../assets/cursor.css';
+import SkillsEvent from '../components/SkillsEvent';
+
 
 // Función para detectar si es dispositivo móvil
 const isMobileDevice = () =>
@@ -22,6 +24,9 @@ const Home = () => {
   const [showSabioMessage, setShowSabioMessage] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showSkills, setShowSkills] = useState(false); // Nuevo estado para evento de Skills
+  const [showExperienceText, setShowExperienceText] = useState(false);
+
+  
 
   const audioRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -187,7 +192,28 @@ const Home = () => {
   
       return () => scrollEl?.removeEventListener('scroll', handleScrollSkills);
     }, [showSkills]);
-  
+
+    // Nuevo evento: mostrar texto de experiencia al llegar a la posición 2000 (y que permanezca visible)
+    useEffect(() => {
+      const handleScrollExperience = () => {
+        const scrollX = scrollContainerRef.current?.scrollLeft || 0;
+
+        // Solo activa el evento una vez, cuando se alcanza la posición 2000 o más
+        if (
+          zoomOut &&
+          movementReady &&
+          !showExperienceText &&
+          scrollX >= 2000
+        ) {
+          setShowExperienceText(true);
+        }
+      };
+
+      const scrollEl = scrollContainerRef.current;
+      scrollEl?.addEventListener('scroll', handleScrollExperience);
+
+      return () => scrollEl?.removeEventListener('scroll', handleScrollExperience);
+    }, [zoomOut, movementReady, showExperienceText]);
 
   useEffect(() => {
     const cursor = document.getElementById('cursor-glow');
@@ -334,7 +360,68 @@ const Home = () => {
               Frontend Developer<br />&<br />Creative Designer
             </div>
           )}
-          
+
+{showExperienceText && (
+  
+<div
+  className="absolute z-30 group"
+  style={{
+    top: '450px',
+    left: '2300px',
+    width: '600px',
+    pointerEvents: 'auto'
+  }}
+>
+  {/* Texto principal */}
+  <div
+    className="text-white text-xl md:text-2xl text-center transition-opacity duration-[9000ms] opacity-0 animate-fade-in-slow"
+  >
+    Experiencia en Desarrollo <br />Diseño UX/UI <br />& Illustration
+  </div>
+
+  {/* Panel lateral o inferior según pantalla */}
+  <div
+    className="absolute md:left-[520px] left-0 md:top-0 top-[100px] opacity-0 group-hover:opacity-100 transition-all duration-700 flex md:flex-row flex-col md:items-start items-center gap-4 md:pl-0 pl-4"
+  >
+    {/* Línea blanca animada */}
+    <div
+      className="bg-white"
+      style={{
+        width: '2px',
+        height: '120px',
+        boxShadow: '0 0 6px white',
+        transform: 'scaleY(0)',
+        transformOrigin: 'top',
+        animation: 'growLine 0.5s ease-in-out forwards'
+      }}
+    ></div>
+
+    {/* Lista de experiencias */}
+    <div className="text-white text-sm md:text-base leading-relaxed font-light space-y-2 text-left md:pt-0 pt-2">
+      <p>- Menarini Group – Desarrollador/Diseñador</p>
+      <p>- Freepik – Diseñador</p>
+      <p>- Diseñador Creativo</p>
+      <p>- Proyectos propios como desarrollador frontend</p>
+    </div>
+  </div>
+
+  {/* Animación para la línea */}
+  <style>
+    {`
+      .group:hover div[style*="scaleY"] {
+        animation: growLine 0.5s ease-in-out forwards;
+      }
+
+      @keyframes growLine {
+        from { transform: scaleY(0); }
+        to { transform: scaleY(1); }
+      }
+    `}
+  </style>
+</div>
+
+)}
+
 
           <img
             src="/sprites/sabio.gif"
@@ -350,7 +437,8 @@ const Home = () => {
               className="absolute bg-white text-black text-sm p-3 rounded-md shadow-md font-sans bocadillo-animado"
               style={{ fontSize: '20px', top: '50px', left: '2340px', maxWidth: '300px', zIndex: 20 }}
             >
-              mmmhh... Look this...
+                  Keep going... <br></br>your path is just beginning.
+
             </div>
           )}
 
@@ -426,6 +514,8 @@ const Home = () => {
 
 
           {showCrow && <CrowAnimation />}
+          {showSkills && <SkillsEvent />}
+
         </div>
       </div>
     </div>
