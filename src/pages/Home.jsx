@@ -4,6 +4,8 @@ import '../assets/home.css';
 import '../assets/particles.css';
 import CrowAnimation from '../components/CrowAnimation';
 import '../assets/cursor.css';
+import SkillsEvent from '../components/SkillsEvent';
+
 
 // Función para detectar si es dispositivo móvil
 const isMobileDevice = () =>
@@ -350,7 +352,8 @@ const Home = () => {
               className="absolute bg-white text-black text-sm p-3 rounded-md shadow-md font-sans bocadillo-animado"
               style={{ fontSize: '20px', top: '50px', left: '2340px', maxWidth: '300px', zIndex: 20 }}
             >
-              mmmhh... Look this...
+                  Keep going... <br></br>your path is just beginning.
+
             </div>
           )}
 
@@ -426,6 +429,8 @@ const Home = () => {
 
 
           {showCrow && <CrowAnimation />}
+          {showSkills && <SkillsEvent />}
+
         </div>
       </div>
     </div>
