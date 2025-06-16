@@ -24,6 +24,8 @@ const Home = () => {
   const [showSabioMessage, setShowSabioMessage] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showSkills, setShowSkills] = useState(false); // Nuevo estado para evento de Skills
+  const [showExperienceText, setShowExperienceText] = useState(false);
+
   
 
   const audioRef = useRef(null);
@@ -190,7 +192,28 @@ const Home = () => {
   
       return () => scrollEl?.removeEventListener('scroll', handleScrollSkills);
     }, [showSkills]);
-  
+
+    // Nuevo evento: mostrar texto de experiencia al llegar a la posición 2000 (y que permanezca visible)
+    useEffect(() => {
+      const handleScrollExperience = () => {
+        const scrollX = scrollContainerRef.current?.scrollLeft || 0;
+
+        // Solo activa el evento una vez, cuando se alcanza la posición 2000 o más
+        if (
+          zoomOut &&
+          movementReady &&
+          !showExperienceText &&
+          scrollX >= 2000
+        ) {
+          setShowExperienceText(true);
+        }
+      };
+
+      const scrollEl = scrollContainerRef.current;
+      scrollEl?.addEventListener('scroll', handleScrollExperience);
+
+      return () => scrollEl?.removeEventListener('scroll', handleScrollExperience);
+    }, [zoomOut, movementReady, showExperienceText]);
 
   useEffect(() => {
     const cursor = document.getElementById('cursor-glow');
@@ -338,8 +361,14 @@ const Home = () => {
             </div>
           )}
 
-          
-          
+          {showExperienceText && (
+            <div
+              className="absolute text-white text-xl md:text-2xl text-center z-30 transition-opacity duration-[9000ms] opacity-0 animate-fade-in-slow"
+              style={{ top: '350px', left: '1500px', width: '400px', pointerEvents: 'none' }}
+            >
+              Experiencia en Desarrollo <br />Diseño UX/UI <br></br>& Illustration
+            </div>
+          )}
 
           <img
             src="/sprites/sabio.gif"
