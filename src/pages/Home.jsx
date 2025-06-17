@@ -5,6 +5,7 @@ import '../assets/particles.css';
 import CrowAnimation from '../components/CrowAnimation';
 import '../assets/cursor.css';
 import SkillsEvent from '../components/SkillsEvent';
+import ProjectsEvent from '../components/ProjectsEvent';
 
 
 // Función para detectar si es dispositivo móvil
@@ -25,6 +26,8 @@ const Home = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [showSkills, setShowSkills] = useState(false); // Nuevo estado para evento de Skills
   const [showExperienceText, setShowExperienceText] = useState(false);
+  const [showProjects, setShowProjects] = useState(false);
+
 
   
 
@@ -192,6 +195,21 @@ const Home = () => {
   
       return () => scrollEl?.removeEventListener('scroll', handleScrollSkills);
     }, [showSkills]);
+
+    // Evento de proyectos -
+
+    useEffect(() => {
+      const handleScrollProjects = () => {
+        const x = scrollContainerRef.current?.scrollLeft || 0;
+        if (!showProjects && x >= 5600) {
+          setShowProjects(true);
+          console.log('📦 Evento de proyectos activado');
+        }
+      };
+      scrollContainerRef.current?.addEventListener('scroll', handleScrollProjects);
+      return () => scrollContainerRef.current?.removeEventListener('scroll', handleScrollProjects);
+    }, [showProjects]);
+    
 
     // Nuevo evento: mostrar texto de experiencia al llegar a la posición 2000 (y que permanezca visible)
     useEffect(() => {
@@ -515,6 +533,8 @@ const Home = () => {
 
           {showCrow && <CrowAnimation />}
           {showSkills && <SkillsEvent />}
+          {showProjects && <ProjectsEvent />}
+
 
         </div>
       </div>
