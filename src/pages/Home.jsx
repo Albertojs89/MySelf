@@ -246,6 +246,10 @@ const Home = () => {
     return () => window.removeEventListener('mousemove', moveCursor);
   }, []);
 
+
+
+//RENDERIZADO
+
   return (
     <div className="bg-black">
       <div className="custom-cursor-container">
@@ -306,6 +310,28 @@ const Home = () => {
           className="fixed bottom-[78px] left-[200px] w-[80px] h-[120px] z-20 pointer-events-none transition-all duration-300"
         />
       )}
+
+      {/* Minimapa de navegación fijo */}
+{zoomOut && movementReady && (
+  <div
+    className="fixed top-4 left-1/2 -translate-x-1/2 z-40 flex gap-4 opacity-50 hover:opacity-100 transition-opacity duration-500"
+  >
+    {[{ pos: 440, label: 'Inicio' }, { pos: 2200, label: 'Experiencia' }, { pos: 3600, label: 'Skills' }, { pos: 5190, label: 'Proyectos' }, { pos: 7300, label: 'Contacto' }].map((item, idx) => (
+      <button
+        key={idx}
+        onClick={() => {
+          scrollContainerRef.current?.scrollTo({
+            left: item.pos,
+            behavior: 'smooth',
+          });
+        }}
+        className="w-4 h-4 rounded-full bg-white shadow-md hover:scale-125 transition-transform duration-200"
+        title={item.label}
+      ></button>
+    ))}
+  </div>
+)}
+
 
       {/* Flechas móviles para mover el sprite */}
       {zoomOut && movementReady && isMobile && (
