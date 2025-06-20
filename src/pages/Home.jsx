@@ -253,39 +253,48 @@ const Home = () => {
       </div>
 
       {!started && (
-        isMobile ? (
-          <div
-            className="fixed inset-0 bg-black flex items-center justify-center z-50"
-            onClick={handleMobileStart}
-            style={{ touchAction: 'manipulation', cursor: 'pointer' }}
-          >
-            <button
-              className="text-white border border-white px-6 py-3 text-xl hover:bg-white hover:text-black transition-all duration-300 rounded-full"
-              style={{ fontSize: 22 }}
-            >
-              Toca para entrar a mi portfolio
-            </button>
-          </div>
-        ) : (
-          <div className="fixed inset-0 bg-black flex items-center justify-center z-50">
-            <button
-              onClick={handleStart}
-              className="text-white border border-white px-6 py-3 text-xl hover:bg-white hover:text-black transition-all duration-300 rounded-full"
-            >
-              Entrar a mi portfolio
-            </button>
-          </div>
-        )
-      )}
+  isMobile ? (
+    <div
+      className="fixed inset-0 bg-black flex items-center justify-center z-50 flex-col"
+      onClick={handleMobileStart}
+      style={{ touchAction: 'manipulation', cursor: 'pointer' }}
+    >
+      <button
+        className="text-white border border-white px-6 py-3 text-xl hover:bg-white hover:text-black transition-all duration-300 rounded-full"
+        style={{ fontSize: 22 }}
+      >
+        Toca para entrar a mi portfolio
+      </button>
 
-      {started && (
+      <p className="text-white text-xs md:text-sm opacity-70 absolute bottom-6 text-center px-4 w-full">
+        Experiencia recomendada: Escritorio, pantalla completa (F11) y auriculares 🎧
+      </p>
+    </div>
+  ) : (
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-50 flex-col">
+      <button
+        onClick={handleStart}
+        className="text-white border border-white px-6 py-3 text-xl hover:bg-white hover:text-black transition-all duration-300 rounded-full"
+      >
+        Entrar a mi portfolio
+      </button>
+
+      <p className="text-white text-xs md:text-sm opacity-70 absolute bottom-6 text-center px-4 w-full">
+        Experiencia recomendada: Escritorio, pantalla completa (F11) y auriculares 🎧
+      </p>
+    </div>
+  )
+)}
+
+
+      {/* {started && (
         <Link
           to="/about"
           className="fixed bottom-4 left-1/2 -translate-x-1/2 text-white text-sm opacity-70 hover:opacity-100 transition-opacity duration-300 z-50"
         >
           AboutMe
         </Link>
-      )}
+      )} */}
 
       <audio ref={audioRef} src="/audio/musicaFondo.mp3" loop hidden />
 
@@ -444,15 +453,18 @@ const Home = () => {
           <img
             src="/sprites/sabio.gif"
             alt="Sabio"
-            className="absolute w-[90px] h-[170px] z-20"
-            style={{ top: '60px', left: '2240px', filter: 'blur(1.3px)' }}
+            className="sabio-sprite absolute w-[90px] h-[170px] z-20"
+            style={{ left: '2240px', filter: 'blur(1.3px)' }}
             onMouseEnter={() => setShowSabioMessage(true)}
             onMouseLeave={() => setShowSabioMessage(false)}
           />
 
+
+
+
           {showSabioMessage && (
             <div
-              className="absolute bg-white text-black text-sm p-3 rounded-md shadow-md font-sans bocadillo-animado"
+              className="absolute sabio-sprite bg-white text-black text-sm p-3 rounded-md shadow-md font-sans bocadillo-animado"
               style={{ fontSize: '20px', top: '80px', left: '2340px', maxWidth: '300px', zIndex: 20 }}
             >
               Keep going... <br />your path is just beginning.

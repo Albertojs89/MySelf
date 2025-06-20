@@ -190,3 +190,29 @@
 .bocadillo-animado {
   animation: slideInFromRight 0.6s ease-out forwards;
 }
+
+
+/* Estilo base (pantalla normal) */
+.sabio-sprite {
+  top: 60px!important; /* Ajuste para pantallas normales */
+}
+
+/* Pantallas muy altas (por ejemplo, modo F11 o resolución vertical grande) */
+@media screen and (min-height: 850px) {
+  .sabio-sprite {
+    top: 40px!important; /* Ajuste para pantallas altas */
+  }
+}
+
+@media screen and (min-height: 1000px) {
+  .sabio-sprite {
+    top: 200px!important; /* Ajuste para pantallas muy altas */
+  }
+}
+
+/* Ajustes en móviles más estrechos si hiciera falta */
+@media screen and (max-width: 768px) {
+  .sabio-sprite {
+    top: -30px!important; /* Ajuste para móviles */
+  }
+}
