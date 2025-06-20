@@ -1,6 +1,10 @@
-// ProjectsEvent.jsx
-import { FaHtml5, FaCss3Alt, FaJs, FaReact, FaGithub, FaExternalLinkAlt, FaPhp } from 'react-icons/fa';
-import { SiTailwindcss, SiVite, SiMysql, SiBootstrap } from 'react-icons/si';
+import { useState } from 'react';
+import {
+  FaHtml5, FaCss3Alt, FaJs, FaReact, FaGithub, FaExternalLinkAlt, FaPhp
+} from 'react-icons/fa';
+import {
+  SiTailwindcss, SiVite, SiMysql, SiBootstrap
+} from 'react-icons/si';
 
 const projects = [
   {
@@ -30,62 +34,85 @@ const projects = [
 ];
 
 export default function ProjectsEvent() {
+  const [current, setCurrent] = useState(0);
+
+  const next = () => setCurrent((prev) => (prev + 1) % projects.length);
+  const prev = () => setCurrent((prev) => (prev - 1 + projects.length) % projects.length);
+
   return (
-    <div
-      className="absolute top-[70px] left-[5700px] w-full max-w-[800px] px-4 z-30 grid grid-cols-1 md:grid-cols-2 gap-8"
-    >
-      {projects.map((proj, i) => (
+    <div className="absolute top-[120px] left-[5700px] w-full max-w-[800px] px-4 z-30">
+      {/* Desktop view */}
+      <div className="hidden md:grid grid-cols-2 gap-8">
+        {projects.map((proj, i) => (
+          <a
+            key={i}
+            href={proj.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg transform transition-all duration-700 opacity-0 animate-fade-in-scale hover:scale-105 hover:shadow-2xl hover:brightness-110 hover:-translate-y-1"
+            style={{ animationDelay: `${i * 300}ms`, animationFillMode: 'forwards' }}
+          >
+            <img src={proj.img} alt={proj.title} className="w-full h-48 object-cover" />
+            <div className="p-4 text-white font-sans">
+              <h3 className="text-lg font-medium drop-shadow-md">{proj.title}</h3>
+              <div className="flex gap-2 text-xl mt-2">
+                {proj.techs.map((Icon, idx) => (
+                  <Icon key={idx} className="text-[#64ffda]" />
+                ))}
+              </div>
+              <p className="mt-2 text-sm text-gray-200 leading-relaxed">
+                {proj.desc}
+              </p>
+              <div className="mt-3 flex gap-4">
+                <a href={proj.github} target="_blank" className="text-white text-xl hover:text-[#64ffda]">
+                  <FaGithub />
+                </a>
+                <a href={proj.link} target="_blank" className="text-white text-xl hover:text-[#64ffda]">
+                  <FaExternalLinkAlt />
+                </a>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {/* Mobile view */}
+      <div className="md:hidden flex flex-col items-center">
         <a
-          key={i}
-          href={proj.link}
+          href={projects[current].link}
           target="_blank"
           rel="noopener noreferrer"
-          className="group bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg transform transition-all duration-700 opacity-0 animate-fade-in-scale hover:scale-105 hover:shadow-2xl hover:brightness-110 hover:-translate-y-1"
-          style={{
-            animationDelay: `${i * 300}ms`,
-            animationFillMode: 'forwards',
-          }}
+          className="group w-full bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg transform transition-all duration-700 opacity-100 animate-fade-in-scale"
         >
-          <img
-            src={proj.img}
-            alt={proj.title}
-            className="w-full h-40 sm:h-48 object-cover"
-          />
+          <img src={projects[current].img} alt={projects[current].title} className="w-full h-40 object-cover" />
           <div className="p-4 text-white font-sans">
-            <h3 className="text-base md:text-lg font-semibold drop-shadow-md leading-tight">
-              {proj.title}
-            </h3>
-            <div className="flex flex-wrap gap-2 text-lg mt-2">
-              {proj.techs.map((Icon, idx) => (
+            <h3 className="text-base font-semibold drop-shadow-md">{projects[current].title}</h3>
+            <div className="flex gap-2 text-lg mt-2 flex-wrap">
+              {projects[current].techs.map((Icon, idx) => (
                 <Icon key={idx} className="text-[#64ffda]" />
               ))}
             </div>
-            <p className="mt-2 text-sm text-gray-200 leading-snug break-words whitespace-pre-line">
-              {proj.desc}
+            <p className="mt-2 text-sm text-gray-200 leading-relaxed">
+              {projects[current].desc}
             </p>
             <div className="mt-3 flex gap-4">
-              <a
-                href={proj.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white text-xl hover:text-[#64ffda]"
-              >
+              <a href={projects[current].github} target="_blank" className="text-white text-xl hover:text-[#64ffda]">
                 <FaGithub />
               </a>
-              <a
-                href={proj.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white text-xl hover:text-[#64ffda]"
-              >
+              <a href={projects[current].link} target="_blank" className="text-white text-xl hover:text-[#64ffda]">
                 <FaExternalLinkAlt />
               </a>
             </div>
           </div>
         </a>
-      ))}
 
-      {/* Animación personalizada */}
+        {/* Botones de navegación */}
+        <div className="flex justify-center gap-6 mt-4">
+          <button onClick={prev} className="text-white text-2xl px-4 py-2 rounded-full bg-white/20 hover:bg-white/40">⟵</button>
+          <button onClick={next} className="text-white text-2xl px-4 py-2 rounded-full bg-white/20 hover:bg-white/40">⟶</button>
+        </div>
+      </div>
+
       <style>{`
         @keyframes fadeInScale {
           0% { opacity: 0; transform: scale(0.9); }
@@ -94,15 +121,6 @@ export default function ProjectsEvent() {
 
         .animate-fade-in-scale {
           animation: fadeInScale 0.8s ease forwards;
-        }
-
-        @media (max-width: 768px) {
-          .projects-container {
-            top: 120px !important;
-            left: 0 !important;
-            width: 100% !important;
-            padding: 0 1rem;
-          }
         }
       `}</style>
     </div>
