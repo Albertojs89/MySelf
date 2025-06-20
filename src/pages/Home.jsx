@@ -445,7 +445,7 @@ const Home = () => {
             src="/sprites/sabio.gif"
             alt="Sabio"
             className="absolute w-[90px] h-[170px] z-20"
-            style={{ top: '40px', left: '2240px', filter: 'blur(1.3px)' }}
+            style={{ top: '60px', left: '2240px', filter: 'blur(1.3px)' }}
             onMouseEnter={() => setShowSabioMessage(true)}
             onMouseLeave={() => setShowSabioMessage(false)}
           />
@@ -453,14 +453,13 @@ const Home = () => {
           {showSabioMessage && (
             <div
               className="absolute bg-white text-black text-sm p-3 rounded-md shadow-md font-sans bocadillo-animado"
-              style={{ fontSize: '20px', top: '50px', left: '2340px', maxWidth: '300px', zIndex: 20 }}
+              style={{ fontSize: '20px', top: '80px', left: '2340px', maxWidth: '300px', zIndex: 20 }}
             >
-                  Keep going... <br></br>your path is just beginning.
-
+              Keep going... <br />your path is just beginning.
             </div>
           )}
 
-          <div className="absolute inset-0 w-[9800px] h-screen bg-bottom bg-no-repeat bg-[url('/images/fondo.png')] filter blur-[2px] z-0" />
+          <div className="absolute inset-0 w-[9800px] h-screen bg-bottom bg-no-repeat bg-[url('/images/fondo2.jpg')] filter blur-[2px] z-0" />
 
           <img
             src="/images/fondoSuelo.png"

@@ -7,24 +7,24 @@ const projects = [
     title: 'Xavi Valverde | Make up Artist',
     techs: [FaHtml5, FaCss3Alt, FaJs, SiTailwindcss, SiVite],
     desc: 'Portfolio visual y elegante para un estilista profesional.',
-    img: '/images/proyecto1.jpg',
+    img: '/images/xavi.jpg',
     github: 'https://github.com/Albertojs89/XaviValverde',
     link: 'https://xavi-valverde.vercel.app/',
   },
   {
-    title: 'MySelf | Portfolio interactivo',
+    title: 'Albertojs | Portfolio Developer & Designer',
     techs: [FaHtml5, FaCss3Alt, FaReact, FaJs, SiTailwindcss, SiVite],
-    desc: 'Portfolio interactivo que mezcla arte, ilustración y desarrollo.',
-    img: '/images/MySelf.jpg',
-    github: 'https://github.com/Albertojs89/PortfolioBite',
-    link: 'https://myself.albertojs.com/',
+    desc: 'Mi portfolio personal y profesional.',
+    img: '/images/miPortfolio.jpg',
+    github: 'https://github.com/Albertojs89/AlbertoJSDev',
+    link: 'https://www.albertojs.com/',
   },
   {
     title: 'Bitepixe PortalGames',
     techs: [FaHtml5, SiBootstrap, FaPhp, FaCss3Alt, SiMysql],
     desc: 'Plataforma gamer con comunidad, análisis y sistema de usuarios.',
     img: '/images/bitepixe.jpg',
-    github: 'https://github.com/Albertojs89',
+    github: 'https://github.com/Albertojs89/M7DAW2_AlbertoJim/tree/UF3/BITEPIXE',
     link: 'https://albertojs89.alwaysdata.net/BITEPIXE/index.php',
   },
 ];
@@ -32,7 +32,7 @@ const projects = [
 export default function ProjectsEvent() {
   return (
     <div
-      className="absolute top-[70px] left-[5700px] w-[800px] z-30 grid grid-cols-1 md:grid-cols-2 gap-8 px-6"
+      className="absolute top-[70px] left-[5700px] w-[800px] z-30 grid grid-cols-1 md:grid-cols-2 gap-8 px-4"
     >
       {projects.map((proj, i) => (
         <a
@@ -51,7 +51,7 @@ export default function ProjectsEvent() {
                 <Icon key={idx} className="text-[#64ffda]" />
               ))}
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-gray-200 drop-shadow-md">
+            <p className="mt-2 text-sm leading-relaxed text-gray-200 drop-shadow-md break-words whitespace-pre-line">
               {proj.desc}
             </p>
             <div className="mt-3 flex gap-4">
