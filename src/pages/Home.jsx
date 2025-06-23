@@ -6,6 +6,7 @@ import CrowAnimation from '../components/CrowAnimation';
 import '../assets/cursor.css';
 import SkillsEvent from '../components/SkillsEvent';
 import ProjectsEvent from '../components/ProjectsEvent';
+import ContactEvent from '../components/ContactEvent';
 
 
 // Función para detectar si es dispositivo móvil
@@ -28,6 +29,8 @@ const Home = () => {
   const [showExperienceText, setShowExperienceText] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
   const [currentSection, setCurrentSection] = useState(''); //Sección actual del minimapa
+  const [showContact, setShowContact] = useState(false); //Sección de contacto
+
 
 
   
@@ -266,6 +269,22 @@ const Home = () => {
   }, []);
   
 
+
+  useEffect(() => {
+    const handleScrollContact = () => {
+      const x = scrollContainerRef.current?.scrollLeft || 0;
+      if (!showContact && x >= 7300) {
+        setShowContact(true);
+        console.log('📮 Evento de contacto activado');
+      }
+    };
+  
+    const scrollEl = scrollContainerRef.current;
+    scrollEl?.addEventListener('scroll', handleScrollContact);
+  
+    return () => scrollEl?.removeEventListener('scroll', handleScrollContact);
+  }, [showContact]);
+  
 
 //RENDERIZADO
 
@@ -591,6 +610,7 @@ const Home = () => {
           {showCrow && <CrowAnimation />}
           {showSkills && <SkillsEvent />}
           {showProjects && <ProjectsEvent />}
+          {showContact && <ContactEvent />}
 
 
         </div>
