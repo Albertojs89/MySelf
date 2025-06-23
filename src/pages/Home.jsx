@@ -27,6 +27,7 @@ const Home = () => {
   const [showSkills, setShowSkills] = useState(false); // Nuevo estado para evento de Skills
   const [showExperienceText, setShowExperienceText] = useState(false);
   const [showProjects, setShowProjects] = useState(false);
+  const [currentSection, setCurrentSection] = useState(''); //Sección actual del minimapa
 
 
   
@@ -247,6 +248,24 @@ const Home = () => {
   }, []);
 
 
+  useEffect(() => {
+    const handleSectionHighlight = () => {
+      const x = scrollContainerRef.current?.scrollLeft || 0;
+  
+      if (x >= 0 && x < 1400) setCurrentSection('Inicio');
+      else if (x >= 1400 && x < 3000) setCurrentSection('Experiencia');
+      else if (x >= 3000 && x < 4400) setCurrentSection('Skills');
+      else if (x >= 4400 && x < 6400) setCurrentSection('Proyectos');
+      else if (x >= 6400) setCurrentSection('Contacto');
+    };
+  
+    const scrollEl = scrollContainerRef.current;
+    scrollEl?.addEventListener('scroll', handleSectionHighlight);
+  
+    return () => scrollEl?.removeEventListener('scroll', handleSectionHighlight);
+  }, []);
+  
+
 
 //RENDERIZADO
 
@@ -312,25 +331,26 @@ const Home = () => {
       )}
 
       {/* Minimapa de navegación fijo */}
-{zoomOut && movementReady && (
-  <div
-    className="fixed top-4 left-1/2 -translate-x-1/2 z-40 flex gap-4 opacity-50 hover:opacity-100 transition-opacity duration-500"
-  >
-    {[{ pos: 440, label: 'Inicio' }, { pos: 2200, label: 'Experiencia' }, { pos: 3600, label: 'Skills' }, { pos: 5190, label: 'Proyectos' }, { pos: 7300, label: 'Contacto' }].map((item, idx) => (
-      <button
-        key={idx}
-        onClick={() => {
-          scrollContainerRef.current?.scrollTo({
-            left: item.pos,
-            behavior: 'smooth',
-          });
-        }}
-        className="w-4 h-4 rounded-full bg-white shadow-md hover:scale-125 transition-transform duration-200"
-        title={item.label}
-      ></button>
-    ))}
-  </div>
-)}
+      {zoomOut && movementReady && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-40 flex gap-4 opacity-50 hover:opacity-100 transition-opacity duration-500">
+          {[{ pos: 440, label: 'Inicio' }, { pos: 2200, label: 'Experiencia' }, { pos: 3600, label: 'Skills' }, { pos: 5190, label: 'Proyectos' }, { pos: 7300, label: 'Contacto' }].map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                scrollContainerRef.current?.scrollTo({
+                  left: item.pos,
+                  behavior: 'smooth',
+                });
+              }}
+              className={`w-4 h-4 rounded-full shadow-md transition-transform duration-200 ${
+                currentSection === item.label ? 'scale-125 bg-[#64ffda]' : 'bg-white hover:scale-125'
+              }`}
+              title={item.label}
+            ></button>
+          ))}
+        </div>
+      )}
+
 
 
       {/* Flechas móviles para mover el sprite */}
