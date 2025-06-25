@@ -1,96 +1,95 @@
-import React from 'react';
-import { FaLinkedin, FaGithub, FaFileAlt } from 'react-icons/fa';
+import React, { useState } from 'react';
+import ContactIcons from './ContactIcons';
+
 
 const ContactEvent = () => {
+  const [messageSent, setMessageSent] = useState(false);
+
+  const handleSend = () => {
+    setMessageSent(true);
+    setTimeout(() => setMessageSent(false), 4000); // Oculta tras 4 segundos
+  };
+
   return (
     <div
-      className="absolute z-30"
+      className="absolute z-30 animate-fade-in-soft"
       style={{
         left: '7400px',
         top: '160px',
-        width: '360px',
+        width: '100%',
+        maxWidth: '420px',
         textAlign: 'center',
       }}
     >
-      {/* Cuervo animado */}
-      <img
-        src="/sprites/corvo.png"
-        alt="Cuervo"
-        className="mx-auto w-[100px] animate-float drop-shadow-md"
-        style={{
-          animationDelay: '0.2s',
-          filter: 'grayscale(100%)',
-        }}
-      />
-
-      {/* Carta fondo ilustrado */}
       <div
-        className="relative animate-fade-in-soft"
-        style={{
-          backgroundImage: "url('/images/carta.png')",
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          width: '100%',
-          height: '500px',
-          padding: '140px 30px 100px 30px',
-          filter: 'grayscale(100%)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
+        className="backdrop-blur-md bg-white/10 hover:bg-white/20 transition-all duration-500 border border-white/10 rounded-2xl px-8 py-8 text-white text-sm font-sans shadow-xl mx-auto w-full max-w-lg"
+        style={{ boxShadow: '0 0 20px rgba(255,255,255,0.05)' }}
       >
-        <div className="text-[#222] text-base flex flex-col gap-5 items-center">
-          <h3 className="text-xl font-bold">CONTACTO</h3>
-
-          <a href="mailto:albertojs.dev@gmail.com" className="underline hover:text-blue-700">
-            albertojs.dev@gmail.com
-          </a>
-
-          <div className="flex gap-6 justify-center text-[26px]">
-            <a
-              href="https://www.linkedin.com/in/albertojs/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="LinkedIn"
-              className="hover:scale-125 transition-transform text-blue-700"
-            >
-              <FaLinkedin />
-            </a>
-            <a
-              href="https://github.com/Albertojs89"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="GitHub"
-              className="hover:scale-125 transition-transform text-black"
-            >
-              <FaGithub />
-            </a>
-            <a
-              href="/cv_alberto.pdf"
-              download
-              title="Descargar CV"
-              className="hover:scale-125 transition-transform text-gray-700"
-            >
-              <FaFileAlt />
-            </a>
+        <h3 className="text-2xl font-semibold mb-6 text-white tracking-wide">Contacto</h3>
+        <form
+          action="mailto:bertocover@gmail.com"
+          method="POST"
+          encType="text/plain"
+          onSubmit={handleSend}
+        >
+          <div className="mb-5 text-left">
+            <label htmlFor="name" className="block mb-1 text-white text-sm">Nombre</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              required
+              className="w-full bg-transparent border-b border-white outline-none py-2 px-2 text-white placeholder-white/60 focus:border-[#64ffda] transition-all duration-300"
+              placeholder="Tu nombre"
+            />
           </div>
-        </div>
+
+          <div className="mb-5 text-left">
+            <label htmlFor="email" className="block mb-1 text-white text-sm">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              required
+              className="w-full bg-transparent border-b border-white outline-none py-2 px-2 text-white placeholder-white/60 focus:border-[#64ffda] transition-all duration-300"
+              placeholder="tu@email.com"
+            />
+          </div>
+
+          <div className="mb-6 text-left">
+            <label htmlFor="message" className="block mb-1 text-white text-sm">Mensaje</label>
+            <textarea
+              name="message"
+              id="message"
+              rows="4"
+              required
+              className="w-full bg-transparent border border-white rounded-md outline-none py-3 px-3 text-white placeholder-white/60 resize-none focus:border-[#64ffda] transition-all duration-300"
+              placeholder="Tu mensaje..."
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            className="bg-white text-black px-6 py-2 rounded-md hover:bg-gray-100 transition-all duration-300 font-semibold tracking-wide"
+          >
+            Enviar ✉️
+          </button>
+        </form>
+
+        <ContactIcons />
+
+
+        {/* Mensaje de confirmación */}
+        {messageSent && (
+          <p className="mt-4 text-green-300 text-sm animate-fade-in">
+            ✅ Mensaje enviado. Gracias por contactarme.
+          </p>
+        )}
       </div>
 
-      {/* Estilos de animación */}
+      {/* Estilos personalizados */}
       <style>
         {`
-          @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-          }
-
-          .animate-float {
-            animation: float 3s ease-in-out infinite;
-          }
-
           @keyframes fadeInSoft {
             from {
               opacity: 0;
@@ -104,6 +103,23 @@ const ContactEvent = () => {
 
           .animate-fade-in-soft {
             animation: fadeInSoft 2.2s ease-out forwards;
+          }
+
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+
+          .animate-fade-in {
+            animation: fadeIn 0.6s ease-in forwards;
+          }
+
+          @media (max-width: 480px) {
+            .max-w-lg {
+              padding-left: 1rem;
+              padding-right: 1rem;
+              font-size: 0.9rem;
+            }
           }
         `}
       </style>

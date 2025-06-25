@@ -7,6 +7,7 @@ import '../assets/cursor.css';
 import SkillsEvent from '../components/SkillsEvent';
 import ProjectsEvent from '../components/ProjectsEvent';
 import ContactEvent from '../components/ContactEvent';
+import ContactIcons from '../components/ContactIcons';
 
 
 // Función para detectar si es dispositivo móvil
@@ -611,6 +612,7 @@ const Home = () => {
           {showSkills && <SkillsEvent />}
           {showProjects && <ProjectsEvent />}
           {showContact && <ContactEvent />}
+          
 
 
         </div>
