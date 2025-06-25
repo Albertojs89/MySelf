@@ -16,7 +16,7 @@ const ContactIcons = () => {
         <a href="https://github.com/Albertojs89" target="_blank" rel="noopener noreferrer" title="GitHub">
           <FaGithub className="text-white text-3xl hover:text-gray-300 shadow-xl animate-float-soft" />
         </a>
-        <a href="https://instagram.com/tuUsuario" target="_blank" rel="noopener noreferrer" title="Instagram">
+        <a href="https://instagram.com/bitepixe" target="_blank" rel="noopener noreferrer" title="Instagram">
           <FaInstagram className="text-white text-3xl hover:text-pink-400 shadow-xl animate-float-soft" />
         </a>
       </div>

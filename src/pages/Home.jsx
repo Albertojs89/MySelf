@@ -612,7 +612,7 @@ const Home = () => {
           {showSkills && <SkillsEvent />}
           {showProjects && <ProjectsEvent />}
           {showContact && <ContactEvent />}
-          {showContact && <ContactIcons />}
+          
 
 
         </div>
