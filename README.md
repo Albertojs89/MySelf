@@ -44,17 +44,17 @@ El proyecto está **pensado principalmente para pantallas de escritorio**.
 
 ✅ **Arreglo de animaciones de entrada y salida** para el mensaje de “Scroll to move”, con efectos de entrada y fade-out suave.  
 ✅ **Sustitución de icono** por uno creado manualmente con líneas blancas y fondo transparente, mejor integrado en la estética visual.  
-✅ **Ajuste del tamaño y posición del texto** “Scroll to move” para que se vea más natural y legible en la interfaz.  
+✅ **Ajuste del tamaño y posición del texto** “Scroll to move” para que se vea más natural y legible en la interfaz.
+✅ **Ajuste de posición en elementos eventuales (sprite).
+✅ **Evento Skills-Projects-Contact.    
 
 ---
 
 ## 🔜 Próximos Pasos en Desarrollo
 
-➡️ **Nuevo evento al avanzar**: la próxima funcionalidad será un evento interactivo que se activará al llegar a ciertas zonas del escenario.  
-Este evento:
-- Activará nuevas ilustraciones dinámicas y animaciones específicas.
-- Incluirá transiciones de color y efectos de luz para enfatizar el cambio de ambiente.
-- Se controlará mediante un nuevo estado React y un temporizador para gestionar la secuencia de animación.
+➡️ **Retoque de ilustración en fondo fijo.
+➡️ **Sprite animado para evento de projectos.
+
 
 ---
 
